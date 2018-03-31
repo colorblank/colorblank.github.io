@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html style="display: none;" lang="zh">
+    <head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.5.2 -->
+    <script>
+        window.materialVersion = "1.5.2"
+        // Delete localstorage with these tags
+        window.oldVersion = [
+            'codestartv1',
+            '1.3.4',
+            '1.4.0',
+            '1.4.0b1',
+            '1.5.0'
+        ]
+    </script>
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Meta & Info -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Title -->
+    
+    <title>
+        
+            LSTM_TensorFlow using MNIST | 
+        
+        C鱼的博客
+    </title>
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
+
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" itemprop="description" content="求知若饥，虚心若愚">
+    <meta name="keywords" content=",LSTM">
+    <meta name="theme-color" content="#0097A7">
+
+    <!-- Disable Fucking Bloody Baidu Tranformation -->
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import lsloader -->
+    <script>(function(){window.lsloader={jsRunSequence:[],jsnamemap:{},cssnamemap:{}};lsloader.removeLS=function(a){try{localStorage.removeItem(a)}catch(b){}};lsloader.setLS=function(a,c){try{localStorage.setItem(a,c)}catch(b){}};lsloader.getLS=function(a){var c="";try{c=localStorage.getItem(a)}catch(b){c=""}return c};versionString="/*"+(window.materialVersion||"unknownVersion")+"*/";lsloader.clean=function(){try{var b=[];for(var a=0;a<localStorage.length;a++){b.push(localStorage.key(a))}b.forEach(function(e){var f=lsloader.getLS(e);if(window.oldVersion){var d=window.oldVersion.reduce(function(g,h){return g||f.indexOf("/*"+h+"*/")!==-1},false);if(d){lsloader.removeLS(e)}}})}catch(c){}};lsloader.clean();lsloader.load=function(f,a,b,d){if(typeof b==="boolean"){d=b;b=undefined}d=d||false;b=b||function(){};var e;e=this.getLS(f);if(e&&e.indexOf(versionString)===-1){this.removeLS(f);this.requestResource(f,a,b,d);return}if(e){var c=e.split(versionString)[0];if(c!=a){console.log("reload:"+a);this.removeLS(f);this.requestResource(f,a,b,d);return}e=e.split(versionString)[1];if(d){this.jsRunSequence.push({name:f,code:e});this.runjs(a,f,e)}else{document.getElementById(f).appendChild(document.createTextNode(e));b()}}else{this.requestResource(f,a,b,d)}};lsloader.requestResource=function(b,e,a,c){var d=this;if(c){this.iojs(e,b,function(h,f,g){d.setLS(f,h+versionString+g);d.runjs(h,f,g)})}else{this.iocss(e,b,function(f){document.getElementById(b).appendChild(document.createTextNode(f));d.setLS(b,e+versionString+f)},a)}};lsloader.iojs=function(d,b,g){var a=this;a.jsRunSequence.push({name:b,code:""});try{var f=new XMLHttpRequest();f.open("get",d,true);f.onreadystatechange=function(){if(f.readyState==4){if((f.status>=200&&f.status<300)||f.status==304){if(f.response!=""){g(d,b,f.response);return}}a.jsfallback(d,b)}};f.send(null)}catch(c){a.jsfallback(d,b)}};lsloader.iocss=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.iofonts=function(f,c,h,a){var b=this;try{var g=new XMLHttpRequest();g.open("get",f,true);g.onreadystatechange=function(){if(g.readyState==4){if((g.status>=200&&g.status<300)||g.status==304){if(g.response!=""){h(g.response);a();return}}b.cssfallback(f,c,a)}};g.send(null)}catch(d){b.cssfallback(f,c,a)}};lsloader.runjs=function(f,c,e){if(!!c&&!!e){for(var b in this.jsRunSequence){if(this.jsRunSequence[b].name==c){this.jsRunSequence[b].code=e}}}if(!!this.jsRunSequence[0]&&!!this.jsRunSequence[0].code&&this.jsRunSequence[0].status!="failed"){var a=document.createElement("script");a.appendChild(document.createTextNode(this.jsRunSequence[0].code));a.type="text/javascript";document.getElementsByTagName("head")[0].appendChild(a);this.jsRunSequence.shift();if(this.jsRunSequence.length>0){this.runjs()}}else{if(!!this.jsRunSequence[0]&&this.jsRunSequence[0].status=="failed"){var d=this;var a=document.createElement("script");a.src=this.jsRunSequence[0].path;a.type="text/javascript";this.jsRunSequence[0].status="loading";a.onload=function(){d.jsRunSequence.shift();if(d.jsRunSequence.length>0){d.runjs()}};document.body.appendChild(a)}}};lsloader.tagLoad=function(b,a){this.jsRunSequence.push({name:a,code:"",path:b,status:"failed"});this.runjs()};lsloader.jsfallback=function(c,b){if(!!this.jsnamemap[b]){return}else{this.jsnamemap[b]=b}for(var a in this.jsRunSequence){if(this.jsRunSequence[a].name==b){this.jsRunSequence[a].code="";this.jsRunSequence[a].status="failed";this.jsRunSequence[a].path=c}}this.runjs()};lsloader.cssfallback=function(e,c,b){if(!!this.cssnamemap[c]){return}else{this.cssnamemap[c]=1}var d=document.createElement("link");d.type="text/css";d.href=e;d.rel="stylesheet";d.onload=d.onerror=b;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(d,a)};lsloader.runInlineScript=function(c,b){var a=document.getElementById(b).innerText;this.jsRunSequence.push({name:c,code:a});this.runjs()}})();</script>
+
+    <!-- Import queue -->
+    <script>function Queue(){this.dataStore=[];this.offer=b;this.poll=d;this.execNext=a;this.debug=false;this.startDebug=c;function b(e){if(this.debug){console.log("Offered a Queued Function.")}if(typeof e==="function"){this.dataStore.push(e)}else{console.log("You must offer a function.")}}function d(){if(this.debug){console.log("Polled a Queued Function.")}return this.dataStore.shift()}function a(){var e=this.poll();if(e!==undefined){if(this.debug){console.log("Run a Queued Function.")}e()}}function c(){this.debug=true}}var queue=new Queue();</script>
+
+    <!-- Import CSS -->
+    
+        <style id="material_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_css","/css/material.min.css?Z7a72R1E4SxzBKR/WGctOA==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+        <style id="style_css"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("style_css","/css/style.min.css?MKetZV3cUTfDxvMffaOezg==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+        
+
+    
+
+    
+
+    <!-- Config CSS -->
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    overflow-x: hidden !important;
+  }
+  
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+<!-- Import Font -->
+<!-- Import Roboto -->
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-Light.woff2') format('woff2'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-Light.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto LightItalic'), local('Roboto-LightItalic'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-LightItalic.woff2') format('woff2'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-LightItalic.woff') format('woff');
+          }
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto Regular'), local('Roboto-Regular'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-Regular.woff2') format('woff2'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-Regular.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto RegularItalic'), local('Roboto-RegularItalic'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-RegularItalic.woff2') format('woff2'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-RegularItalic.woff') format('woff');
+          }
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 500;
+            src: local('Roboto Medium'), local('Roboto-Medium'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-Medium.woff2') format('woff2'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-Medium.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 500;
+            src: local('Roboto MediumItalic'), local('Roboto-MediumItalic'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-MediumItalic.woff2') format('woff2'), url('https://cdnjs.cat.net/ajax/libs/mdui/0.2.1/fonts/roboto/Roboto-MediumItalic.woff') format('woff');
+        }
+    </style>
+
+
+<!-- Import Material Icons -->
+
+
+    <style id="material_icons"></style><script>if(typeof window.lsLoadCSSMaxNums === "undefined")window.lsLoadCSSMaxNums = 0;window.lsLoadCSSMaxNums++;lsloader.load("material_icons","/css/material-icons.css?pqhB/Rd/ab0H2+kZp0RDmw==",function(){if(typeof window.lsLoadCSSNums === "undefined")window.lsLoadCSSNums = 0;window.lsLoadCSSNums++;if(window.lsLoadCSSNums == window.lsLoadCSSMaxNums)document.documentElement.style.display="";}, false)</script>
+
+
+
+
+    <!-- Import jQuery -->
+    
+        <script>lsloader.load("jq_js","/js/jquery.min.js?qcusAULNeBksqffqUM2+Ig==", true)</script>
+    
+
+    <!-- WebAPP Icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="C鱼的博客">
+    <meta name="msapplication-starturl" content="http://seeyu.me/2017/10/30/LSTM-TensorFlow/">
+    <meta name="msapplication-navbutton-color" content="#0097A7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="C鱼的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!-- Site Verification -->
+    
+    
+
+    <!-- RSS -->
+    
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://seeyu.me/2017/10/30/LSTM-TensorFlow/">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="LSTM_TensorFlow using MNIST | C鱼的博客">
+    <meta property="og:image" content="/img/favicon.png">
+    <meta property="og:description" content="求知若饥，虚心若愚">
+    <meta property="og:article:tag" content="LSTM"> 
+
+    
+        <meta property="article:published_time" content="Mon Oct 30 2017 21:56:00 GMT+0800">
+        <meta property="article:modified_time" content="Tue Oct 31 2017 13:11:11 GMT+0800">
+    
+
+    <!-- The Twitter Card protocol -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Add canonical link for SEO -->
+    
+        <link rel="canonical" href="http://seeyu.me/2017/10/30/LSTM-TensorFlow/index.html" />
+    
+
+    <!-- Structured-data for SEO -->
+    
+        
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "http://seeyu.me/2017/10/30/LSTM-TensorFlow/index.html",
+    "headline": "LSTM_TensorFlow using MNIST",
+    "datePublished": "Mon Oct 30 2017 21:56:00 GMT+0800",
+    "dateModified": "Tue Oct 31 2017 13:11:11 GMT+0800",
+    "author": {
+        "@type": "Person",
+        "name": "C鱼",
+        "image": {
+            "@type": "ImageObject",
+            "url": "/img/avatar.png"
+        },
+        "description": "求知若饥 虚心若愚"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "C鱼的博客",
+        "logo": {
+            "@type":"ImageObject",
+            "url": "/img/favicon.png"
+        }
+    },
+    "keywords": ",LSTM",
+    "description": "求知若饥，虚心若愚",
+}
+</script>
+
+
+    
+
+    <!-- Analytics -->
+    
+    
+    
+
+    <!-- Custom Head --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+
+    <!-- Left aligned menu below button -->
+    
+    
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集内容分为三类"><span class="post-toc-number">1.</span> <span class="post-toc-text">数据集内容分为三类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Shape-of-the-data"><span class="post-toc-number">2.</span> <span class="post-toc-text">Shape of the data</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#一个普通的RNN单元"><span class="post-toc-number">3.</span> <span class="post-toc-text">一个普通的RNN单元</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注意（一）"><span class="post-toc-number">4.</span> <span class="post-toc-text">注意（一）</span></a></li></ol>
+    </ul>
+    
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script type="text/ls-javascript" id="post-thumbnail-script">
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                LSTM_TensorFlow using MNIST
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>C鱼</strong>
+        <span>10月 30, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+        <button id="article-functions-qrcode-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">devices other</i>
+    <span class="visuallyhidden">devices other</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-qrcode-button">
+    <li class="mdl-menu__item">在其它设备中阅读本文章</li>
+    
+        <img src="https://pan.baidu.com/share/qrcode?w=246&h=246&url=http://seeyu.me/2017/10/30/LSTM-TensorFlow/">
+    
+</ul>
+
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/LSTM/">LSTM</a>
+    </ul>
+    
+
+    <!-- Share -->
+    
+        <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=LSTM_TensorFlow using MNIST&url=http://seeyu.me/2017/10/30/LSTM-TensorFlow/index.html&pic=http://seeyu.me/img/favicon.png&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=LSTM_TensorFlow using MNIST&url=http://seeyu.me/2017/10/30/LSTM-TensorFlow/index.html&via=C鱼" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://seeyu.me/2017/10/30/LSTM-TensorFlow/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://seeyu.me/2017/10/30/LSTM-TensorFlow/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+        <a class="post_share-link" href="http://connect.qq.com/widget/shareqq/index.html?site=C鱼的博客&title=LSTM_TensorFlow using MNIST&summary=求知若饥，虚心若愚&pics=http://seeyu.me/img/favicon.png&url=http://seeyu.me/2017/10/30/LSTM-TensorFlow/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 QQ
+            </li>
+        </a>
+    
+
+    <!-- Share Telegram -->
+    
+        <a class="post_share-link" href="https://telegram.me/share/url?url=http://seeyu.me/2017/10/30/LSTM-TensorFlow/index.html&text=LSTM_TensorFlow using MNIST" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Telegram
+            </li>
+        </a>
+    
+</ul>
+
+    
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>长期记忆（LSTM）是这些年人们使用的循环神经网络中最常见的类型。它们主要用于顺序数据。我们建立了一个LSTM的模型，采用mnist数据集来测试模型效果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">from</span> tensorflow.contrib <span class="keyword">import</span> rnn</div><div class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST_data/"</span>, one_hot=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<pre><code>Extracting MNIST_data/train-images-idx3-ubyte.gz
+Extracting MNIST_data/train-labels-idx1-ubyte.gz
+Extracting MNIST_data/t10k-images-idx3-ubyte.gz
+Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
+</code></pre><h2 id="数据集内容分为三类"><a href="#数据集内容分为三类" class="headerlink" title="数据集内容分为三类"></a>数据集内容分为三类</h2><ul>
+<li>Training data(mnist.train)-55000 images of training data</li>
+<li>Test data(mnist.test)-10000 images of test data</li>
+<li>Validation data(mnist.validation)-5000 images of validation data.</li>
+</ul>
+<h2 id="Shape-of-the-data"><a href="#Shape-of-the-data" class="headerlink" title="Shape of the data"></a>Shape of the data</h2><p>三类数据集的形状都是一样的。</p>
+<p>训练集包含55000张图片，每张图片是28x28像素的。因此，一张图片是28x28的矩阵，可以转换为784x1的向量。而所有的训练集图片组合在一起，可以构成55000x784的矩阵。</p>
+<blockquote>
+<p>The training set consists of 55000 images of 28 pixels X 28 pixels each.These 784(28X28) pixel values are flattened in form of a single vector of dimensionality 784.The collection of all such 55000 pixel vectors(one for each image) is stored in form of a numpy array of shape (55000,784) and is referred to as mnist.train.images.</p>
+</blockquote>
+<p>每张训练集的图片都关联着一个标签，这个标签代表数据集图片代表的数字（这个数据集是手写数字的图片）。由于有0-9十个数字，标签可以用10x1的向量表示。55000张图片的标签组合在一起构成了大小为（55000，10）的矩阵</p>
+<blockquote>
+<p>Each of these 55000 training images are associated with a label representing the class to which that image belongs.There are 10 such classes(0,1,2…9).Class labels are represented in one hot encoded form.Thus the labels are stored in form of numpy array of shape (55000,10) and is referred to as mnist.train.labels.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">time_steps = <span class="number">28</span></div><div class="line">num_units = <span class="number">128</span></div><div class="line">n_input = <span class="number">28</span></div><div class="line">learning_rate = <span class="number">0.001</span></div><div class="line">n_classes = <span class="number">10</span></div><div class="line">batch_size = <span class="number">128</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">out_weights=tf.Variable(tf.random_normal([num_units,n_classes]))</div><div class="line">out_bias=tf.Variable(tf.random_normal([n_classes]))</div><div class="line"></div><div class="line"><span class="comment">#defining placeholders</span></div><div class="line"><span class="comment">#input image placeholder</span></div><div class="line">x=tf.placeholder(<span class="string">"float"</span>,[<span class="keyword">None</span>,time_steps,n_input])</div><div class="line"><span class="comment">#input label placeholder</span></div><div class="line">y=tf.placeholder(<span class="string">"float"</span>,[<span class="keyword">None</span>,n_classes])</div><div class="line"></div><div class="line">input1 = tf.unstack(x, time_steps, <span class="number">1</span>)</div><div class="line"></div><div class="line">lstm_layer = rnn.BasicLSTMCell(num_units,forget_bias=<span class="number">1</span>)</div><div class="line"><span class="comment">#这里num_units指的是LSTM单元中的单位数。</span></div><div class="line"></div><div class="line">outputs,_ = rnn.static_rnn(lstm_layer,input1,dtype=tf.float32)</div></pre></td></tr></table></figure>
+<h2 id="一个普通的RNN单元"><a href="#一个普通的RNN单元" class="headerlink" title="一个普通的RNN单元"></a>一个普通的RNN单元</h2><p>RNN单元由时间展开，如下：<br><a href="https://imgchr.com/i/axVTs" target="_blank" rel="external"><img src="https://s1.ax1x.com/2017/10/30/axVTs.md.png" alt="axVTs.png" border="0"></a></p>
+<ul>
+<li>$x_{t}$是在时间步长t的输入。</li>
+<li>$s_{t}$是在时间步长t处的隐藏状态。它可以被可视化为我们网络的“内存”。</li>
+<li>$Ò_吨$指的是输出在时间步长t。</li>
+</ul>
+<p>U，V和W是所有时间步长共享的参数。该参数共享的意义在于，我们的模型在不同输入的每个时间步长执行相同的任务。<br>我们通过展开RNN实现的是，在每个时间步骤中，网络可以被视为前馈网络，同时考虑到前一个时间步长的输出（由时间步长之间的连接表示）。</p>
+<p><code>lstm_layer = rnn.BasicLSTMCell(num_units,forget_bias=1)</code><br><code>#这里num_units指的是LSTM单元中的单位数。</code><br>num_units可以解释为前馈神经网络隐藏层的类比。前馈神经网络隐层中的节点num_units数目等于网络每个时间步长的LSTM单元中LSTM单元的数量。<br><a href="https://imgchr.com/i/avqyD" target="_blank" rel="external"><img src="https://s1.ax1x.com/2017/10/30/avqyD.md.png" alt="avqyD.png" border="0"></a></p>
+<hr>
+<p><code>tf.static_rnn(cell,inputs)</code></p>
+<p>该inputs参数接受形状张量列表[batch_size,input_size]。该列表的长度是网络展开的时间步长数，即该列表的每个元素对应于我们展开网络的相应时间步长的输入。</p>
+<p>对于我们的MNIST图像的情况，我们有大小为28X28的图像。它们可以被推断为具有28行28像素的图像。我们将通过28个时间步骤展开我们的网络，使得在每个时间步长，我们可以输入一行28像素（input_size），从而通过28个时间步长完整的图像。如果我们提供batch_size图像数量，每个时间步长将提供相应的batch_size图像行。下图应该清除任何疑问 -</p>
+<p><a href="https://imgchr.com/i/avbQO" target="_blank" rel="external"><img src="https://s1.ax1x.com/2017/10/30/avbQO.md.png" alt="avbQO.png" border="0"></a></p>
+<p>生成的输出static_rnn是形状的张量列表[batch_size,num_units]。列表的长度是网络展开的时间步长数，即每个时间步长的一个输出张量。在这个实现中，我们将只关注最后时间的输出当图像的所有行被提供给RNN即在最后时间步长时将产生预测。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">prediction = tf.matmul(outputs[<span class="number">-1</span>], out_weights) + out_bias</div><div class="line"><span class="comment">#prediction = tf.matmul(outputs[-1], out_weights) + out_bias</span></div><div class="line">loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y))</div><div class="line"></div><div class="line">opt = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)</div><div class="line"></div><div class="line">correct_prediction = tf.equal(tf.argmax(prediction, <span class="number">1</span>), tf.argmax(y,<span class="number">1</span>))</div><div class="line"></div><div class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">init=tf.global_variables_initializer()</div><div class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</div><div class="line">    sess.run(init)</div><div class="line">    iter=<span class="number">1</span></div><div class="line">    <span class="keyword">while</span> iter&lt;<span class="number">800</span>:</div><div class="line">        batch_x,batch_y=mnist.train.next_batch(batch_size=batch_size)</div><div class="line"></div><div class="line">        batch_x=batch_x.reshape((batch_size,time_steps,n_input))</div><div class="line"></div><div class="line">        sess.run(opt, feed_dict=&#123;x: batch_x, y: batch_y&#125;)</div><div class="line">        </div><div class="line">        <span class="comment">#测试集检测</span></div><div class="line">        test_data = mnist.test.images[:<span class="number">128</span>].reshape((<span class="number">-1</span>, time_steps, n_input))</div><div class="line">        test_label = mnist.test.labels[:<span class="number">128</span>]</div><div class="line">        print(<span class="string">"Testing Accuracy:"</span>, sess.run(accuracy, feed_dict=&#123;x: test_data, y: test_label&#125;))</div><div class="line">        <span class="comment">#测试集检测</span></div><div class="line">        <span class="keyword">if</span> iter %<span class="number">10</span>==<span class="number">0</span>:</div><div class="line">            acc=sess.run(accuracy,feed_dict=&#123;x:batch_x,y:batch_y&#125;)</div><div class="line">            los=sess.run(loss,feed_dict=&#123;x:batch_x,y:batch_y&#125;)</div><div class="line">            print(<span class="string">"For iter "</span>,iter)</div><div class="line">            print(<span class="string">"Accuracy "</span>,acc)</div><div class="line">            print(<span class="string">"Loss "</span>,los)</div><div class="line">            print(<span class="string">"__________________"</span>)</div><div class="line"></div><div class="line">        iter=iter+<span class="number">1</span></div></pre></td></tr></table></figure>
+<pre><code>Testing Accuracy: 0.109375
+Testing Accuracy: 0.109375
+Testing Accuracy: 0.132812
+Testing Accuracy: 0.15625
+Testing Accuracy: 0.117188
+Testing Accuracy: 0.21875
+Testing Accuracy: 0.296875
+Testing Accuracy: 0.304688
+Testing Accuracy: 0.296875
+Testing Accuracy: 0.304688
+For iter  10
+Accuracy  0.257812
+Loss  2.07883
+__________________
+Testing Accuracy: 0.328125
+Testing Accuracy: 0.359375
+Testing Accuracy: 0.382812
+Testing Accuracy: 0.367188
+Testing Accuracy: 0.382812
+Testing Accuracy: 0.375
+Testing Accuracy: 0.359375
+Testing Accuracy: 0.351562
+Testing Accuracy: 0.359375
+Testing Accuracy: 0.382812
+For iter  20
+Accuracy  0.445312
+Loss  1.69872
+__________________
+Testing Accuracy: 0.382812
+Testing Accuracy: 0.421875
+Testing Accuracy: 0.429688
+Testing Accuracy: 0.46875
+Testing Accuracy: 0.476562
+Testing Accuracy: 0.5
+Testing Accuracy: 0.507812
+Testing Accuracy: 0.5
+Testing Accuracy: 0.5
+Testing Accuracy: 0.507812
+For iter  30
+Accuracy  0.4375
+Loss  1.50721
+__________________
+Testing Accuracy: 0.515625
+Testing Accuracy: 0.539062
+Testing Accuracy: 0.570312
+Testing Accuracy: 0.585938
+Testing Accuracy: 0.585938
+Testing Accuracy: 0.59375
+Testing Accuracy: 0.59375
+Testing Accuracy: 0.570312
+Testing Accuracy: 0.578125
+Testing Accuracy: 0.578125
+For iter  40
+Accuracy  0.640625
+Loss  0.962442
+__________________
+Testing Accuracy: 0.59375
+Testing Accuracy: 0.554688
+Testing Accuracy: 0.554688
+Testing Accuracy: 0.578125
+Testing Accuracy: 0.554688
+Testing Accuracy: 0.59375
+Testing Accuracy: 0.609375
+Testing Accuracy: 0.617188
+Testing Accuracy: 0.632812
+Testing Accuracy: 0.640625
+For iter  50
+Accuracy  0.765625
+Loss  0.778242
+__________________
+Testing Accuracy: 0.648438
+Testing Accuracy: 0.640625
+Testing Accuracy: 0.640625
+Testing Accuracy: 0.625
+Testing Accuracy: 0.648438
+Testing Accuracy: 0.648438
+Testing Accuracy: 0.671875
+Testing Accuracy: 0.6875
+Testing Accuracy: 0.695312
+Testing Accuracy: 0.664062
+For iter  60
+Accuracy  0.679688
+Loss  0.985955
+__________________
+Testing Accuracy: 0.648438
+Testing Accuracy: 0.664062
+Testing Accuracy: 0.703125
+Testing Accuracy: 0.6875
+Testing Accuracy: 0.703125
+Testing Accuracy: 0.703125
+Testing Accuracy: 0.726562
+Testing Accuracy: 0.734375
+Testing Accuracy: 0.757812
+Testing Accuracy: 0.710938
+For iter  70
+Accuracy  0.820312
+Loss  0.59718
+__________________
+Testing Accuracy: 0.695312
+Testing Accuracy: 0.695312
+Testing Accuracy: 0.742188
+Testing Accuracy: 0.75
+Testing Accuracy: 0.75
+Testing Accuracy: 0.757812
+Testing Accuracy: 0.757812
+Testing Accuracy: 0.773438
+Testing Accuracy: 0.75
+Testing Accuracy: 0.742188
+For iter  80
+Accuracy  0.789062
+Loss  0.680092
+__________________
+Testing Accuracy: 0.773438
+Testing Accuracy: 0.789062
+Testing Accuracy: 0.835938
+Testing Accuracy: 0.835938
+Testing Accuracy: 0.851562
+Testing Accuracy: 0.867188
+Testing Accuracy: 0.835938
+Testing Accuracy: 0.796875
+Testing Accuracy: 0.78125
+Testing Accuracy: 0.796875
+For iter  90
+Accuracy  0.8125
+Loss  0.688224
+__________________
+Testing Accuracy: 0.796875
+Testing Accuracy: 0.835938
+Testing Accuracy: 0.84375
+Testing Accuracy: 0.851562
+Testing Accuracy: 0.84375
+Testing Accuracy: 0.835938
+Testing Accuracy: 0.84375
+Testing Accuracy: 0.867188
+Testing Accuracy: 0.835938
+Testing Accuracy: 0.835938
+For iter  100
+Accuracy  0.828125
+Loss  0.439927
+__________________
+Testing Accuracy: 0.835938
+Testing Accuracy: 0.867188
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.875
+Testing Accuracy: 0.882812
+For iter  110
+Accuracy  0.867188
+Loss  0.444241
+__________________
+Testing Accuracy: 0.882812
+Testing Accuracy: 0.882812
+Testing Accuracy: 0.890625
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.921875
+For iter  120
+Accuracy  0.84375
+Loss  0.485538
+__________________
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.921875
+For iter  130
+Accuracy  0.90625
+Loss  0.382915
+__________________
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.921875
+For iter  140
+Accuracy  0.867188
+Loss  0.356146
+__________________
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.875
+Testing Accuracy: 0.859375
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.90625
+For iter  150
+Accuracy  0.890625
+Loss  0.376553
+__________________
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.890625
+Testing Accuracy: 0.867188
+Testing Accuracy: 0.898438
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.921875
+For iter  160
+Accuracy  0.867188
+Loss  0.371748
+__________________
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+For iter  170
+Accuracy  0.890625
+Loss  0.290704
+__________________
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.953125
+For iter  180
+Accuracy  0.921875
+Loss  0.320236
+__________________
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.921875
+For iter  190
+Accuracy  0.953125
+Loss  0.20053
+__________________
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.921875
+For iter  200
+Accuracy  0.914062
+Loss  0.305831
+__________________
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.90625
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.875
+Testing Accuracy: 0.890625
+Testing Accuracy: 0.929688
+For iter  210
+Accuracy  0.867188
+Loss  0.356829
+__________________
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.914062
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.921875
+For iter  220
+Accuracy  0.921875
+Loss  0.27915
+__________________
+Testing Accuracy: 0.921875
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+For iter  230
+Accuracy  0.929688
+Loss  0.206641
+__________________
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.90625
+For iter  240
+Accuracy  0.945312
+Loss  0.177758
+__________________
+Testing Accuracy: 0.929688
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+For iter  250
+Accuracy  0.929688
+Loss  0.209504
+__________________
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+For iter  260
+Accuracy  0.945312
+Loss  0.192074
+__________________
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+For iter  270
+Accuracy  0.953125
+Loss  0.15836
+__________________
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+For iter  280
+Accuracy  0.953125
+Loss  0.125364
+__________________
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+For iter  290
+Accuracy  0.921875
+Loss  0.220573
+__________________
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+For iter  300
+Accuracy  0.929688
+Loss  0.225352
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+For iter  310
+Accuracy  0.960938
+Loss  0.133694
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+For iter  320
+Accuracy  0.976562
+Loss  0.205548
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+For iter  330
+Accuracy  0.921875
+Loss  0.207905
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+For iter  340
+Accuracy  0.960938
+Loss  0.164377
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+For iter  350
+Accuracy  0.9375
+Loss  0.169862
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+For iter  360
+Accuracy  0.9375
+Loss  0.226911
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+For iter  370
+Accuracy  0.96875
+Loss  0.173299
+__________________
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+For iter  380
+Accuracy  0.945312
+Loss  0.166889
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+For iter  390
+Accuracy  0.953125
+Loss  0.239948
+__________________
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+For iter  400
+Accuracy  0.953125
+Loss  0.0787421
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+For iter  410
+Accuracy  0.96875
+Loss  0.0669084
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+For iter  420
+Accuracy  0.960938
+Loss  0.116731
+__________________
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 1.0
+Testing Accuracy: 1.0
+Testing Accuracy: 0.984375
+For iter  430
+Accuracy  0.976562
+Loss  0.100515
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 1.0
+Testing Accuracy: 1.0
+Testing Accuracy: 0.992188
+Testing Accuracy: 1.0
+For iter  440
+Accuracy  0.929688
+Loss  0.191241
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+For iter  450
+Accuracy  0.953125
+Loss  0.137285
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 1.0
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+For iter  460
+Accuracy  0.976562
+Loss  0.0721269
+__________________
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+For iter  470
+Accuracy  0.953125
+Loss  0.125116
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+For iter  480
+Accuracy  0.96875
+Loss  0.0720188
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+For iter  490
+Accuracy  0.976562
+Loss  0.118606
+__________________
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+For iter  500
+Accuracy  0.960938
+Loss  0.158814
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+For iter  510
+Accuracy  0.96875
+Loss  0.106757
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+For iter  520
+Accuracy  0.976562
+Loss  0.0856151
+__________________
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+For iter  530
+Accuracy  0.953125
+Loss  0.0772318
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+For iter  540
+Accuracy  0.984375
+Loss  0.0558051
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+For iter  550
+Accuracy  0.984375
+Loss  0.0561309
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.976562
+For iter  560
+Accuracy  0.96875
+Loss  0.108961
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.9375
+Testing Accuracy: 0.945312
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+For iter  570
+Accuracy  0.945312
+Loss  0.22261
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.992188
+For iter  580
+Accuracy  0.9375
+Loss  0.189915
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+For iter  590
+Accuracy  0.96875
+Loss  0.0798329
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+For iter  600
+Accuracy  0.984375
+Loss  0.064096
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+For iter  610
+Accuracy  0.9375
+Loss  0.208509
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+For iter  620
+Accuracy  0.96875
+Loss  0.10871
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+For iter  630
+Accuracy  0.96875
+Loss  0.191045
+__________________
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.953125
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.984375
+Testing Accuracy: 1.0
+For iter  640
+Accuracy  0.96875
+Loss  0.0773583
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+For iter  650
+Accuracy  0.96875
+Loss  0.0884017
+__________________
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+For iter  660
+Accuracy  0.929688
+Loss  0.145886
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+For iter  670
+Accuracy  0.96875
+Loss  0.115895
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+For iter  680
+Accuracy  0.976562
+Loss  0.114911
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+For iter  690
+Accuracy  0.96875
+Loss  0.0948501
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.976562
+For iter  700
+Accuracy  0.953125
+Loss  0.159804
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+For iter  710
+Accuracy  0.992188
+Loss  0.0515673
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+For iter  720
+Accuracy  0.976562
+Loss  0.098267
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.976562
+For iter  730
+Accuracy  0.953125
+Loss  0.138382
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+For iter  740
+Accuracy  0.976562
+Loss  0.114366
+__________________
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+For iter  750
+Accuracy  0.96875
+Loss  0.0861038
+__________________
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+For iter  760
+Accuracy  0.945312
+Loss  0.120766
+__________________
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 1.0
+Testing Accuracy: 1.0
+Testing Accuracy: 1.0
+Testing Accuracy: 1.0
+For iter  770
+Accuracy  0.96875
+Loss  0.072889
+__________________
+Testing Accuracy: 1.0
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 1.0
+Testing Accuracy: 1.0
+Testing Accuracy: 1.0
+For iter  780
+Accuracy  0.984375
+Loss  0.0480433
+__________________
+Testing Accuracy: 1.0
+Testing Accuracy: 1.0
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.992188
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.984375
+Testing Accuracy: 0.96875
+For iter  790
+Accuracy  0.96875
+Loss  0.101997
+__________________
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.960938
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.976562
+Testing Accuracy: 0.96875
+Testing Accuracy: 0.96875
+</code></pre><h2 id="注意（一）"><a href="#注意（一）" class="headerlink" title="注意（一）"></a>注意（一）</h2><p>我们的图像基本上被平坦化为一个单一的维度矢量784开始。功能next_batch(batch_size)必然返回batch_size这些784维度向量的批次，因此它们被重塑为[batch_size,time_steps,n_input]可以被占位符接受。</p>
+
+        
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2017/11/01/TensorFlow-CNN/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/10/29/DL-PW-initialization/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="C鱼's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        holy.zaim@gmail.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="mailto: holy.zaim@gmail.com" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2018/03/">三月 2018<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2018/01/">一月 2018<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/12/">十二月 2017<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/11/">十一月 2017<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/10/">十月 2017<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/08/">八月 2017<span class="sidebar_archives-count">4</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">chrome_reader_mode</i>
+                
+                分类
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                <a class="sidebar_archives-link" href="/categories/应用推荐/">应用推荐<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/建站问题/">建站问题<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/categories/机器学习/">机器学习<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/categories/深度学习/">深度学习<span class="sidebar_archives-count">8</span></a></li><li><a class="sidebar_archives-link" href="/categories/编程问题/">编程问题<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Pages  -->
+    
+        <li>
+            <a href="/tags" title="标签">
+                
+                    <i class="material-icons sidebar-material-icons">label</i>
+                
+                标签
+            </a>
+        </li>
+        
+            <li class="divider"></li>
+        
+    
+
+    <!-- Article Number  -->
+    
+        <li>
+            <a href="/archives">
+                文章总数
+                <span class="sidebar-badge">21</span>
+            </a>
+        </li>
+        
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+
+<!-- Theme Material -->
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div id="back-to-top" class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/oh_seeyu" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-twitter">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+
+    <!-- Google + -->
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+        <a href="https://github.com/colorblank" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-github">
+                <span class="visuallyhidden">Github</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+        <a href="https://t.me/offgrid" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn footer-sns-telegram">
+                <span class="visuallyhidden">Telegram</span>
+            </button><!--
+     --></a>
+    
+    
+    <!-- V2EX -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©<script type="text/javascript">var fd = new Date();document.write("&nbsp;" + fd.getFullYear() + "&nbsp;");</script>C鱼的博客
+            
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import JS File -->
+
+    <script>lsloader.load("lazyload_js","/js/lazyload.min.js?1BcfzuNXqV+ntF6gq+5X3Q==", true)</script>
+
+
+
+    <script>lsloader.load("js_js","/js/js.min.js?V/53wGualMuiPM3xoetD5Q==", true)</script>
+
+
+
+    <script>lsloader.load("np_js","/js/nprogress.js?pl3Qhb9lvqR1FlyLUna1Yw==", true)</script>
+
+
+<script type="text/ls-javascript" id="NProgress-script">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- UC Browser Compatible -->
+<script>
+	var agent = navigator.userAgent.toLowerCase();
+	if(agent.indexOf('ucbrowser')>0) {
+		document.write('<link rel="stylesheet" href="/css/uc.css">');
+	   alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+	}
+</script>
+
+<!-- Import prettify js  -->
+
+
+
+<!-- Window Load -->
+<!-- add class for prettify -->
+<script type="text/ls-javascript" id="window-load">
+    $(window).on('load', function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+
+    
+    
+</script>
+
+<!-- MathJax Load-->
+
+
+<!-- Bing Background -->
+
+
+<script type="text/ls-javascript" id="lazy-load">
+    // Offer LazyLoad
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    // Start Queue
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+<!-- Custom Footer -->
+
+
+
+<script>
+    (function(){
+        var scriptList = document.querySelectorAll('script[type="text/ls-javascript"]')
+
+        for (var i = 0; i < scriptList.length; ++i) {
+            var item = scriptList[i];
+            lsloader.runInlineScript(item.id,item.id);
+        }
+    })()
+console.log('\n %c © Material Theme | Version: 1.5.2 | https://github.com/viosey/hexo-theme-material %c \n', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-left-radius:5px;border-bottom-left-radius:5px;', 'color:#455a64;background:#e0e0e0;padding:5px 0;border-top-right-radius:5px;border-bottom-right-radius:5px;');
+</script>
+
+                </main>
+            </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+        </body>
+    
+</html>
